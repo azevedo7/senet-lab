@@ -21,4 +21,4 @@ class Board:
         for row in range(ROWS):
             self.board.append([])
             for col in range(COLS):
-                
+                pass
