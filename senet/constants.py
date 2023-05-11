@@ -1,0 +1,10 @@
+import pygame
+
+ROWS = 3
+COLS = 10
+WIDTH = 600
+HEIGHT = 400
+SQ_SIZE = WIDTH//COLS
+
+DARK = (120, 82, 55)
+LIGHT = (251, 225, 187)
