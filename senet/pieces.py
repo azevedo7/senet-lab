@@ -1,6 +1,6 @@
 import pygame.draw
-
 from .constants import SQ_SIZE
+
 
 class Piece:
     def __init__(self, row, col, color):
@@ -17,5 +17,4 @@ class Piece:
         self.y = SQ_SIZE * self.row + SQ_SIZE // 2
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (self.x,self.y))
-
+        pygame.draw.circle(screen, self.color, (self.x, self.y), SQ_SIZE/3)
