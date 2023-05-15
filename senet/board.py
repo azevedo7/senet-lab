@@ -2,7 +2,7 @@ import pygame
 from .constants import LIGHT, DARK, ROWS, COLS, SQ_SIZE, WHITE, BLACK, WIDTH
 from .pieces import Piece
 
-class Board:
+class Board:    
     def __init__(self):
         self.board = []
         self.selected_piece = None

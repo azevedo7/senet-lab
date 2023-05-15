@@ -24,3 +24,7 @@ class Stick:
 
     def calc_mov(self):
         pass # TODO: Calculate number of houses to walk
+        for i in self.sticks:
+            if i == 1:
+                moves += 1
+                
