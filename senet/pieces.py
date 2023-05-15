@@ -7,6 +7,7 @@ class Piece:
         self.row = row
         self.col = col
         self.color = color
+        self.selected = False
 
         self.x = 0
         self.y = 0
@@ -17,4 +18,15 @@ class Piece:
         self.y = SQ_SIZE * self.row + SQ_SIZE // 2
 
     def draw(self, screen):
+        if self.selected:
+            pygame.draw.rect(screen, "green", (self.col * SQ_SIZE, self.row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
         pygame.draw.circle(screen, self.color, (self.x, self.y), SQ_SIZE/3)
+
+    def select(self):
+        self.selected = True
+
+    def move(self, row, col):
+        self.row = row
+        self.col = col
+        self.calc_pos()
+

@@ -16,6 +16,9 @@ class Board:
                 if (row + col) % 2:
                     pygame.draw.rect(screen, DARK, (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
+    def move(self, piece, row, col):
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+
     def create_board(self):
         for row in range(ROWS):
             self.board.append([])
@@ -27,6 +30,15 @@ class Board:
                         self.board[row].append(Piece(row, col, BLACK))
                 else:
                     self.board[row].append(0)
+
+    def select_piece(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        row = mouse_y // SQ_SIZE
+        col = mouse_x // SQ_SIZE
+        if row <= ROWS or col <= COLS:
+            if self.board[row][col] != 0:
+                self.board[row][col].select()
 
     def print_board(self, screen):
         for row in range(ROWS):
