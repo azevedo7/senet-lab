@@ -23,10 +23,13 @@ class Stick:
             pygame.draw.rect(screen, rect_color, (rect_x, rect_y, 20, 80))
 
     def calc_mov(self):
-        pass # TODO: Calculate number of houses to walk
+        # TODO: Calculate number of houses to walk
+        black = 0
         for i in self.sticks:
             if i == 1:
                 black += 1
+            
+            
             
             
         
