@@ -10,13 +10,12 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption('Senet')
 
-# TODO:
 #   -Piece movement
+# TODO:
 #       Check if movement is valid
 #       Show valid movements
 #       Selection animation
-#   -Sticks calc_mov function
-#   -Implement menu
+
 
 
 def main():
