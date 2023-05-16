@@ -2,7 +2,7 @@ import pygame
 from .constants import LIGHT, DARK, ROWS, COLS, SQ_SIZE, WHITE, BLACK, WIDTH
 from .pieces import Piece
 
-class Board:    
+class Board:
     def __init__(self):
         self.board = []
         self.selected_piece = None
@@ -18,16 +18,14 @@ class Board:
                 match row, col:
                     case 2,6:
                         image = pygame.image.load('images\specialCases\img_16.png')
-                        image = pygame.transform.scale(image, (SQ_SIZE,SQ_SIZE))
+                        image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(5*SQ_SIZE, 2*SQ_SIZE))
-                        screen.blit(image,image_rect)
-
-
-
-                
+                        screen.blit(image, image_rect)
 
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        piece.move(row, col)
+
 
     def create_board(self):
         for row in range(ROWS):
@@ -49,6 +47,9 @@ class Board:
         if row <= ROWS-1 and col <= COLS-1:
             if self.board[row][col] != 0:
                 self.board[row][col].select()
+
+    def get_piece(self, row, col):
+        return self.board[row][col]
 
     def print_board(self, screen):
         for row in range(ROWS):
