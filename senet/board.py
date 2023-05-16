@@ -36,7 +36,6 @@ class Board:
 
         row = mouse_y // SQ_SIZE
         col = mouse_x // SQ_SIZE
-        if row <= ROWS or col <= COLS:
             if self.board[row][col] != 0:
                 self.board[row][col].select()
 
