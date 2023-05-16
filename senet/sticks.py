@@ -8,7 +8,6 @@ class Stick:
         self.sticks = []
         for i in range(4):
             self.sticks.append(randint(0, 1))
-        self.play_again = 0
 
     # Function to draw the sticks
     def draw_sticks(self, screen):
@@ -24,10 +23,11 @@ class Stick:
             pygame.draw.rect(screen, rect_color, (rect_x, rect_y, 20, 80))
 
     def calc_mov(self):
-        blacks = 0
-        # TODO: Calculate number of houses to walk
+        pass # TODO: Calculate number of houses to walk
         for i in self.sticks:
             if i == 1:
-                blacks += 1
-        if blacks == 0:
-            moves = 6
+                black += 1
+            
+            
+        
+                
