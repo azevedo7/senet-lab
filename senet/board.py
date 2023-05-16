@@ -15,6 +15,14 @@ class Board:
             for col in range(COLS):
                 if (row + col) % 2:
                     pygame.draw.rect(screen, DARK, (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+                match row, col:
+                    case 2,6:
+                        image = pygame.image.load('images\special_cases\n_16.png')
+                        screen.blit(image, bottomrigth = (6*SQ_SIZE, 2*SQ_SIZE))
+
+
+
+                
 
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
