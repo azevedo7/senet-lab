@@ -17,8 +17,10 @@ class Board:
                     pygame.draw.rect(screen, DARK, (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
                 match row, col:
                     case 2,6:
-                        image = pygame.image.load('images\special_cases\n_16.png')
-                        screen.blit(image, bottomrigth = (6*SQ_SIZE, 2*SQ_SIZE))
+                        image = pygame.image.load('images\specialCases\img_16.png')
+                        image = pygame.transform.scale(image, (SQ_SIZE,SQ_SIZE))
+                        image_rect = image.get_rect(bottomleft=(5*SQ_SIZE, 2*SQ_SIZE))
+                        screen.blit(image,image_rect)
 
 
 
