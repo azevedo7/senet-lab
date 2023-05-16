@@ -11,20 +11,26 @@ class Board:
 
     def draw_squares(self, screen):
         screen.fill(LIGHT)
+        # Row ranges from 0 to 2
         for row in range(ROWS):
+            # Col ranges from 0 to 9
             for col in range(COLS):
                 if (row + col) % 2:
                     pygame.draw.rect(screen, DARK, (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
                 match row, col:
-                    case 2,6:
+                    case 1,5:
                         image = pygame.image.load('images\specialCases\img_16.png')
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
-                        image_rect = image.get_rect(bottomleft=(5*SQ_SIZE, 2*SQ_SIZE))
-                        screen.blit(image, image_rect)
+                        screen.blit(image, (col*SQ_SIZE, row*SQ_SIZE))
+
 
     def move(self, piece, row, col):
+        second_piece = self.get_piece(row, col)
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        if second_piece:
+            second_piece.move(piece.row, piece.col)
         piece.move(row, col)
+
 
 
     def create_board(self):
