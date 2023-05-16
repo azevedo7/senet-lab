@@ -6,8 +6,6 @@ pygame.init()
 
 def menu(screen):
     # Set up the window
-    pygame.display.set_caption("SENET Menu")
-
     # Set up the fonts
     font = pygame.font.Font(None, 36)
 
