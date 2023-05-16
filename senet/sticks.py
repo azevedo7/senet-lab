@@ -26,5 +26,8 @@ class Stick:
         pass # TODO: Calculate number of houses to walk
         for i in self.sticks:
             if i == 1:
-                moves += 1
+                black += 1
+            
+            
+        
                 
