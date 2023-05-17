@@ -30,7 +30,7 @@ def menu(screen):
                             return True
                             ##################################
 
-                        elif item["text"] == "Load Game":
+                        elif item["text"] == "Load Game from a file":
                             print("Opening options...")
                             return False
 
