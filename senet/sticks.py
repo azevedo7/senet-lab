@@ -24,10 +24,29 @@ class Stick:
 
     def calc_mov(self):
         # TODO: Calculate number of houses to walk
-        black = 0
+        white = 0
+        moves = 0
         for i in self.sticks:
-            if i == 1:
-                black += 1
+            if i == 0:
+                white += 1
+        if white == 0:
+            moves = 5
+        elif white == 2 or white == 3:
+            moves = white
+            #play other
+        else:
+            moves = white
+            #play again
+        return moves
+    
+    def play_again(self):
+        moves = self.calc_mov()
+        print (moves)
+
+
+
+
+            
             
             
             
