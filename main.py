@@ -34,6 +34,7 @@ def main():
     while run:
         round_over = False
         sticks = Stick()
+        sticks.play_again()
         selected = 0
         while not round_over:
             clock.tick(FPS)
