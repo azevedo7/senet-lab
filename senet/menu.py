@@ -31,11 +31,11 @@ def menu(screen):
                             ##################################
 
                         elif item["text"] == "Load Game from a file":
-                            print("Opening options...")
+                            print("Openning options...")
                             return False
 
                         elif item["text"] == "Rules Game":
-                            print("Opening rules...")
+                            print("Openning rules...")
                             ##################################
                             return False
 
