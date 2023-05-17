@@ -4,7 +4,7 @@ pygame.init()
 
 def background(screen):
 
-    background = pygame.image.load('"C:\Users\Jorge Costa\Desktop\imagem.png"')
+    background = pygame.image.load("C:\Users\Jorge Costa\Desktop\imagem.png")
 
     # Loop principal
     running = True
