@@ -11,7 +11,9 @@ class Board:
 
     def draw_squares(self, screen):
         screen.fill(LIGHT)
+        # Row ranges from 0 to 2
         for row in range(ROWS):
+            # Col ranges from 0 to 9
             for col in range(COLS):
                 if (row + col) % 2:
                     pygame.draw.rect(screen, DARK, (col * SQ_SIZE, row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
@@ -43,8 +45,12 @@ class Board:
                         screen.blit(image, image_rect)
 
     def move(self, piece, row, col):
+        second_piece = self.get_piece(row, col)
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        if second_piece:
+            second_piece.move(piece.row, piece.col)
         piece.move(row, col)
+
 
 
     def create_board(self):
