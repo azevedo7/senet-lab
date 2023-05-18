@@ -23,25 +23,30 @@ class Board:
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(5*SQ_SIZE, 2*SQ_SIZE))
                         screen.blit(image, image_rect)
-                    case 2,6:
+                    case 2,5:
                         image = pygame.image.load('images\specialCases\img_26.png')
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(5*SQ_SIZE, 3*SQ_SIZE))
                         screen.blit(image, image_rect)
-                    case 2,7:
+                    case 2,6:
                         image = pygame.image.load('images\specialCases\img_27.png')
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(6*SQ_SIZE, 3*SQ_SIZE))
                         screen.blit(image, image_rect)
-                    case 2,8:
+                    case 2,7:
                         image = pygame.image.load('images\specialCases\img_28.png')
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(7*SQ_SIZE, 3*SQ_SIZE))
                         screen.blit(image, image_rect)
-                    case 2,9:
+                    case 2,8:
                         image = pygame.image.load('images\specialCases\img_29.png')
                         image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
                         image_rect = image.get_rect(bottomleft=(8*SQ_SIZE, 3*SQ_SIZE))
+                        screen.blit(image, image_rect)
+                    case 2,9:
+                        image = pygame.image.load('images\specialCases\img_30.png')
+                        image = pygame.transform.scale(image, (SQ_SIZE, SQ_SIZE))
+                        image_rect = image.get_rect(bottomleft=(9*SQ_SIZE, 3*SQ_SIZE))
                         screen.blit(image, image_rect)
 
     def move(self, piece, row, col):
