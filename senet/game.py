@@ -1,5 +1,5 @@
 import pygame
-from .constants import WHITE, BLACK
+from .constants import WHITE, BLACK, SQ_SIZE, HEIGHT, WIDTH
 from .board import Board
 from .sticks import Stick
 
@@ -17,6 +17,8 @@ class Game:
 
     def update(self):
         self.board.print_board(self.screen)
+        self.draw_valid_moves()
+        self.print_turn()
 
     def select(self, row, col):
         if self.selected:
@@ -33,10 +35,10 @@ class Game:
         return False
 
     def _move(self, row, col):
-        piece = self.board.get_piece(row, col)
         if self.selected and (row, col) in self.valid_moves:
             self.board.move(self.selected, row, col)
             self.selected = None
+            self.valid_moves = []
             self.play_again = self.sticks.play_again()
             if not self.play_again:
                 self.change_turn()
@@ -54,7 +56,7 @@ class Game:
     def calc_valid_moves(self, piece):
         self.valid_moves = []
         houses = self.sticks.calc_mov()
-        
+
         house_sum = piece.col + houses
         house_sub = piece.col - houses
 
@@ -68,3 +70,21 @@ class Game:
                 self.valid_moves.append((piece.row, house_sub))
             if house_sub < 0:
                 self.valid_moves.append((piece.row + 1, abs(house_sub) - 1))
+
+        self.draw_valid_moves()
+
+    def draw_valid_moves(self):
+        for row, col in self.valid_moves:
+            pygame.draw.circle(self.screen, "green", [col * SQ_SIZE + SQ_SIZE // 2, row * SQ_SIZE + SQ_SIZE // 2], 5)
+
+    def print_turn(self):
+        font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 32)
+
+        if self.turn == BLACK:
+            color = "Black"
+        else:
+            color = "White"
+        text = font.render(f'Turn: {color}', True, BLACK)
+
+        text_rect = text.get_rect(center=(WIDTH * 0.7, HEIGHT * 0.71))
+        self.screen.blit(text, text_rect)

@@ -1,6 +1,5 @@
 import pygame
 from .constants import WIDTH, HEIGHT, LIGHT
-from senet.launch import back
 
 pygame.init()
 
