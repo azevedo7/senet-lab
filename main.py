@@ -4,6 +4,7 @@ from senet.board import Board
 from senet.sticks import Stick
 from senet.menu import menu
 from senet.game import Game
+from senet.launch import back
 
 FPS = 30
 pygame.init()
@@ -30,7 +31,7 @@ def main():
     clock = pygame.time.Clock()
     game = Game(screen)
 
-    run = menu(screen)
+    run = back(screen)
 
     while run:
         round_over = False
