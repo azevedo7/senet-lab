@@ -3,6 +3,7 @@ from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE
 from senet.board import Board
 from senet.sticks import Stick
 from senet.menu import menu
+from senet.launch import back
 
 FPS = 30
 pygame.init()
@@ -28,7 +29,7 @@ def main():
     board = Board()
     board.create_board()
 
-    run = menu(screen)
+    run = back(screen)
 
 
     while run:
