@@ -11,7 +11,7 @@ def back(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return True
 
-        font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
+        font = font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
 
         image_back = pygame.image.load('images\img_back.png')
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))

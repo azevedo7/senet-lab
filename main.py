@@ -15,7 +15,6 @@ pygame.display.set_caption('Senet')
 
 #   -Piece movement
 # TODO:
-#       Check if movement is valid
 #       Show valid movements
 #       Selection animation
 
