@@ -6,6 +6,9 @@ from .constants import WHITE, BLACK
 class Stick:
     def __init__(self):
         self.sticks = []
+
+    def throw(self):
+        self.sticks = []
         for i in range(4):
             self.sticks.append(randint(0, 1))
 
@@ -41,7 +44,9 @@ class Stick:
     
     def play_again(self):
         moves = self.calc_mov()
-        print (moves)
+        if moves != 2 and moves != 3:
+            return True
+        return False
 
 
 
