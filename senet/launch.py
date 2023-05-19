@@ -1,5 +1,5 @@
 import pygame
-from .constants import WIDTH, HEIGHT, SQ_SIZE, BLACK, WHITE
+from .constants import WIDTH, HEIGHT, BLACK, WHITE
 from senet.menu import menu
 pygame.init()
 
@@ -33,5 +33,5 @@ def back(screen):
         screen.blit(texto,(textRect1))
 
     
-
         pygame.display.update()
+       

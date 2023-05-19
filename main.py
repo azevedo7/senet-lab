@@ -31,6 +31,7 @@ def main():
     game = Game(screen)
 
     run = back(screen)
+    run = menu(screen)
 
     while run:
         round_over = False
