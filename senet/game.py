@@ -4,6 +4,7 @@ from .board import Board
 from .sticks import Stick
 
 move = pygame.mixer.Sound('audio\move.wav')
+
 class Game:
     def __init__(self, screen):
         self.selected = None
