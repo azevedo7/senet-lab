@@ -5,6 +5,7 @@ from senet.sticks import Stick
 from senet.menu3 import menu
 from senet.game import Game
 from senet.start import start
+from senet.rules import game_rules
 
 FPS = 30
 pygame.init()
@@ -28,7 +29,7 @@ def select_piece(pos):
 def main():
     clock = pygame.time.Clock()
     game = Game(screen)
-
+    
     run = start(screen)
     run = menu(screen)
 

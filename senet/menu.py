@@ -1,6 +1,6 @@
 import pygame
 from .constants import WIDTH, HEIGHT, LIGHT
-from senet.regras import game_rules
+from senet.rules import game_rules
 
 pygame.init()
 
