@@ -4,11 +4,13 @@ from .pieces import Piece
 
 
 class Board:
-    def __init__(self):
+    def __init__(self, screen):
         self.board = []
+        self.valid_moves = {}
         self.selected_piece = None
         self.black_left = 5
         self.white_left = 5
+        self.screen = screen
 
     def draw_squares(self, screen):
         screen.fill(LIGHT)
@@ -90,3 +92,30 @@ class Board:
                     piece.draw(screen)
 
         pygame.draw.line(screen, DARK, (0, 3 * SQ_SIZE), (WIDTH, 3 * SQ_SIZE), 2)
+
+    def calc_valid_moves(self, houses, color):
+        self.valid_moves = {}
+
+        for row in range(ROWS):
+            for col in range(COLS):
+                piece = self.get_piece(row, col)
+                if piece:
+                    house_sum = col + houses
+                    house_sub = col - houses
+
+                    if piece.color == color:
+                        if row % 2 == 0:
+                            if house_sum < 10:
+                                self.valid_moves.update({(row, col): (row, house_sum)})
+                            elif house_sum >= 10:
+                                self.valid_moves.update({(row, col): (row + 1, 9 - (house_sum - 10))})
+                                # self.valid_moves.append((piece.row + 1, 9 - (house_sum - 10)))
+                        elif row == 1:
+                            if house_sub >= 0:
+                                self.valid_moves.update({(row, col): (row, house_sub)})
+                                # self.valid_moves.append((piece.row, house_sub))
+                            elif house_sub < 0:
+                                self.valid_moves.update({(row, col): (row + 1, abs(house_sub) - 1)})
+                                # self.valid_moves.append((piece.row + 1, abs(house_sub) - 1))
+
+        return self.valid_moves

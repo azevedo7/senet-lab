@@ -1,5 +1,5 @@
 import pygame
-from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE
+from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE, WHITE
 from senet.board import Board
 from senet.sticks import Stick
 from senet.menu3 import menu
@@ -12,6 +12,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption('Senet')
+
 
 #   -Piece movement
 # TODO:
@@ -29,9 +30,9 @@ def select_piece(pos):
 def main():
     clock = pygame.time.Clock()
     game = Game(screen)
-    
+
     run = start(screen)
-    run = menu(screen)
+    # run = menu(screen)
 
     while run:
         round_over = False
@@ -39,11 +40,9 @@ def main():
         selected = 0
         while not round_over:
             clock.tick(FPS)
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                    round_over = True
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     row, col = select_piece(pos)
