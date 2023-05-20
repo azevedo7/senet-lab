@@ -1,5 +1,6 @@
 import pygame
 from .constants import WIDTH, HEIGHT, LIGHT
+from senet.regras import game_rules
 
 pygame.init()
 
@@ -37,8 +38,8 @@ def menu(screen):
 
                         elif item["text"] == "Rules Game":
                             print("Openning rules...")
-                            ##################################
-                            return False
+                            game_rules()
+                            return True
 
                         elif item["text"] == "Exit":
                             pygame.quit()

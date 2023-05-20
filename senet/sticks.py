@@ -36,10 +36,8 @@ class Stick:
             moves = 5
         elif white == 2 or white == 3:
             moves = white
-            #play other
         else:
             moves = white
-            #play again
         return moves
     
     def play_again(self):

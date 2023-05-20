@@ -3,6 +3,7 @@ from .constants import WHITE, BLACK, SQ_SIZE, HEIGHT, WIDTH
 from .board import Board
 from .sticks import Stick
 
+move = pygame.mixer.Sound('audio\move.wav')
 
 class Game:
     def __init__(self, screen):
@@ -36,6 +37,7 @@ class Game:
 
     def _move(self, row, col):
         if self.selected and (row, col) in self.valid_moves:
+            move.play()
             self.board.move(self.selected, row, col)
             self.selected = None
             self.valid_moves = []

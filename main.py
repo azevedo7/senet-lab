@@ -2,16 +2,15 @@ import pygame
 from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE
 from senet.board import Board
 from senet.sticks import Stick
-from senet.menu import menu
+from senet.menu3 import menu
 from senet.game import Game
-from senet.launch import back
+from senet.start import start
 
 FPS = 30
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption('Senet')
-
 
 #   -Piece movement
 # TODO:
@@ -30,7 +29,8 @@ def main():
     clock = pygame.time.Clock()
     game = Game(screen)
 
-    run = back(screen)
+    run = start(screen)
+    run = menu(screen)
 
     while run:
         round_over = False
@@ -49,6 +49,7 @@ def main():
                     game.select(row, col)
                 if event.type == pygame.K_ESCAPE:
                     game.selected = None
+                    run = False
 
             game.update()
             game.sticks.draw_sticks(screen)
