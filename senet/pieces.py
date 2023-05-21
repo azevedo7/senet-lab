@@ -1,5 +1,5 @@
 import pygame.draw
-from .constants import SQ_SIZE
+from .constants import SQ_SIZE, PADDING
 
 
 class Piece:
@@ -14,12 +14,12 @@ class Piece:
         self.calc_pos()
 
     def calc_pos(self):
-        self.x = SQ_SIZE * self.col + SQ_SIZE // 2
-        self.y = SQ_SIZE * self.row + SQ_SIZE // 2
+        self.x = SQ_SIZE * self.col + SQ_SIZE // 2 + PADDING
+        self.y = SQ_SIZE * self.row + SQ_SIZE // 2 + PADDING
 
     def draw(self, screen):
         if self.selected:
-            pygame.draw.rect(screen, "green", (self.col * SQ_SIZE, self.row * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+            pygame.draw.rect(screen, "green", (self.col * SQ_SIZE + PADDING, self.row * SQ_SIZE + PADDING, SQ_SIZE, SQ_SIZE))
         pygame.draw.circle(screen, self.color, (self.x, self.y), SQ_SIZE/3)
 
     def select(self):

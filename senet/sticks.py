@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from .constants import WHITE, BLACK
+from .constants import WHITE, BLACK, SQ_SIZE, HEIGHT, PADDING
 
 
 class Stick:
@@ -20,8 +20,8 @@ class Stick:
             else:
                 rect_color = BLACK
 
-            rect_x = i * 40 + 30
-            rect_y = 250
+            rect_x = i * SQ_SIZE//1.5 + PADDING * 1.5
+            rect_y = HEIGHT // 1.5
 
             pygame.draw.rect(screen, rect_color, (rect_x, rect_y, 20, 80))
 
@@ -43,7 +43,7 @@ class Stick:
         moves = self.calc_mov()
         if moves != 2 and moves != 3:
             return True
-        return False
+        return True
 
 
 

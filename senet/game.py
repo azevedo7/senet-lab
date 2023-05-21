@@ -1,9 +1,10 @@
 import pygame
-from .constants import WHITE, BLACK, SQ_SIZE, HEIGHT, WIDTH
+from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING
 from .board import Board
 from .sticks import Stick
 
 move = pygame.mixer.Sound('audio\move.wav')
+
 
 class Game:
     def __init__(self, screen):
@@ -19,7 +20,7 @@ class Game:
     def update(self):
         self.board.print_board(self.screen)
         self.draw_valid_moves()
-        self .valid_moves = self.board.calc_valid_moves(self.sticks.calc_mov(), self.turn)
+        self.valid_moves = self.board.calc_valid_moves(self.sticks.calc_mov(), self.turn)
         self.print_turn()
 
     def select(self, row, col):
@@ -37,15 +38,22 @@ class Game:
 
     def _move(self, row, col):
         print(self.valid_moves)
-        if self.selected and self.valid_moves[(self.selected.row, self.selected.col)] == (row, col):
-            move.play()
-            self.board.move(self.selected, row, col)
-            self.selected = None
-            self.play_again = self.sticks.play_again()
-            if not self.play_again:
-                self.change_turn()
-            self.sticks.throw()
-        else: return False
+        if self.valid_moves.get((self.selected.row, self.selected.col)) is not None:
+            if self.selected and self.valid_moves[(self.selected.row, self.selected.col)] == (row, col):
+                move.play()
+                self.board.move(self.selected, row, col)
+                self.selected = None
+                self.play_again = self.sticks.play_again()
+                if not self.play_again:
+                    self.change_turn()
+                self.sticks.throw()
+                self.board.special_houses(row, col)
+            else:
+                if (row, col) == (2, 10): # Check if it's out of the board:
+                    self.board.remove_piece(row, col)
+                return False
+        else:
+            return False
         return True
 
     def change_turn(self):
@@ -54,31 +62,12 @@ class Game:
         else:
             self.turn = WHITE
 
-    # def calc_valid_moves(self, piece):
-    #     self.valid_moves =
-    #     houses = self.sticks.calc_mov()
-    #
-    #     # house_sum = piece.col + houses
-    #     # house_sub = piece.col - houses
-    #     #
-    #     # if piece.row % 2 == 0:
-    #     #     if house_sum < 10:
-    #     #         self.valid_moves.append((piece.row, piece.col + houses))
-    #     #     elif house_sum >= 10:
-    #     #         self.valid_moves.append((piece.row + 1, 9 - (house_sum - 10)))
-    #     # elif piece.row == 1:
-    #     #     if house_sub >= 0:
-    #     #         self.valid_moves.append((piece.row, house_sub))
-    #     #     if house_sub < 0:
-    #     #         self.valid_moves.append((piece.row + 1, abs(house_sub) - 1))
-    #
-    #     self.draw_valid_moves()
-
     def draw_valid_moves(self):
         if self.selected:
             cord = self.valid_moves.get((self.selected.row, self.selected.col))
-            row, col = cord
-            pygame.draw.circle(self.screen, "green", [col * SQ_SIZE + SQ_SIZE // 2, row * SQ_SIZE + SQ_SIZE // 2], 5)
+            if cord:
+                row, col = cord
+                pygame.draw.circle(self.screen, "green", [col * SQ_SIZE + SQ_SIZE // 2 + PADDING, row * SQ_SIZE + SQ_SIZE // 2 + PADDING], 5)
 
     def print_turn(self):
         font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 32)
@@ -91,6 +80,3 @@ class Game:
 
         text_rect = text.get_rect(center=(WIDTH * 0.7, HEIGHT * 0.71))
         self.screen.blit(text, text_rect)
-
-
-
