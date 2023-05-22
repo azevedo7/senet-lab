@@ -1,6 +1,6 @@
 import pygame
 from .constants import WIDTH, HEIGHT, BLACK, WHITE
-
+from senet.menu3 import menu
 pygame.init()
 
 def start(screen):
