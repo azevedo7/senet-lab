@@ -35,23 +35,23 @@ def menu(screen):
         textRect = texto.get_rect(center = (WIDTH/2, HEIGHT*0.1))
         screen.blit(texto,(textRect))
         #BUTTONS
-        button_1 = pygame.image.load('images\menu\play.png')
-        button_1 = pygame.transform.scale(button_1, (200, 50))
+        button_1 = pygame.image.load('images\menu\img_none.png')
+        button_1 = pygame.transform.scale(button_1, (300, 100))
         button_1_rect = button_1.get_rect(center=(WIDTH/2,HEIGHT*0.27))
         screen.blit(button_1, button_1_rect)
 
-        button_2 = pygame.image.load('images\menu\load.png')
-        button_2 = pygame.transform.scale(button_2, (200, 50))
+        button_2 = pygame.image.load('images\menu\img_none.png')
+        button_2 = pygame.transform.scale(button_2, (300, 100))
         button_2_rect = button_2.get_rect(center=(WIDTH/2,HEIGHT*0.42))
         screen.blit(button_2, button_2_rect)
 
-        button_3 = pygame.image.load('images\menu\_rules.png')
-        button_3 = pygame.transform.scale(button_3, (200, 50))
+        button_3 = pygame.image.load('images\menu\img_none.png')
+        button_3 = pygame.transform.scale(button_3, (300, 100))
         button_3_rect = button_3.get_rect(center=(WIDTH/2,HEIGHT*0.57))
         screen.blit(button_3, button_3_rect)
 
-        button_4 = pygame.image.load('images\menu\exit.png')
-        button_4 = pygame.transform.scale(button_4, (200, 50))
+        button_4 = pygame.image.load('images\menu\img_none.png')
+        button_4 = pygame.transform.scale(button_4, (300, 100))
         button_4_rect = button_4.get_rect(center=(WIDTH/2,HEIGHT*0.72))
         screen.blit(button_4, button_4_rect)
         #CHOOSE
