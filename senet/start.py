@@ -39,9 +39,6 @@ def start(screen):
         texto = font.render(f'Made by César Faria, Diana Costa, João Azevedo', True, WHITE)
         textRect1 = texto.get_rect(center = (WIDTH/2, HEIGHT*0.95))
         screen.blit(texto,(textRect1))
-
-        
-
     
         pygame.display.update()
        
