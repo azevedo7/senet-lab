@@ -38,10 +38,8 @@ def main():
     # run = menu(screen)
 
     while run:
-        round_over = False
         game.sticks.throw()
-        selected = 0
-        while not round_over:
+        while not game.over:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -55,13 +53,7 @@ def main():
                         game.selected = None
 
             game.update()
-            game.sticks.draw_sticks(screen)
-
-            pygame.display.update()
-
             clock.tick(FPS)
-
-    pygame.quit()
-
+        game.over = start(screen)
 
 main()

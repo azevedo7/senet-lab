@@ -43,7 +43,7 @@ class Stick:
         moves = self.calc_mov()
         if moves != 2 and moves != 3:
             return True
-        return True
+        return False
 
 
 

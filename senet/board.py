@@ -65,7 +65,8 @@ class Board:
         self.board[2].append(0)
 
     def get_piece(self, row, col):
-        return self.board[row][col]
+        if row < ROWS and col < COLS:
+            return self.board[row][col]
 
     def print_board(self, screen):
         screen.fill(BROWN)
@@ -79,6 +80,11 @@ class Board:
                 if piece != 0:
                     piece.draw(screen)
 
+        for i in range(5 - self.black_left):
+            pygame.draw.circle(screen, BLACK, (WIDTH - PADDING - i * SQ_SIZE, HEIGHT * 0.50), SQ_SIZE / 3)
+
+        for i in range(5 - self.white_left):
+            pygame.draw.circle(screen, WHITE, (PADDING + i * SQ_SIZE, HEIGHT * 0.50), SQ_SIZE / 3)
 
     def calc_valid_moves(self, houses, color):
         self.valid_moves = {}
@@ -112,11 +118,11 @@ class Board:
                         if row == 2 and col == 5:
                             if houses == 1 and self.get_piece(house_second_life[0], house_second_life[1]) == 0:
                                 move = {(row, col): house_humiliation}
-                            elif houses == 2:
+                            elif houses == 2 and self.get_piece(house_three_judges[0], house_three_judges[1]) == 0:
                                 move = {(row, col): house_three_judges}
-                            elif houses == 3:
+                            elif houses == 3 and self.get_piece(house_two_judges[0], house_two_judges[1]) == 0:
                                 move = {(row, col): house_two_judges}
-                            elif houses == 4:
+                            elif houses == 4 and self.get_piece(house_heru[0], house_heru[1]) == 0:
                                 move = {(row, col): house_heru}
                             elif houses == 5:
                                 move = {(row, col): (2, 10)}
@@ -136,13 +142,11 @@ class Board:
     def special_houses(self, row, col):
         piece = self.get_piece(row, col)
         if (row, col) == house_humiliation:
-            self.move(piece, house_second_life[0], house_second_life[1]) # Move to house of beauty
+            self.move(piece, house_second_life[0], house_second_life[1])  # Move to house of beauty
 
-    def remove_piece(self, row, col):
-        piece = self.get_piece(row, col)
-        if piece.col == BLACK:
+    def remove_piece(self, row, col, color):
+        if color == BLACK:
             self.black_left -= 1
         else:
             self.white_left -= 1
-
         self.board[row][col] = 0
