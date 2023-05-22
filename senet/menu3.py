@@ -14,6 +14,19 @@ def menu(screen):
     while True:
         click = False
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                     click = True
+
+
+
         image_back = pygame.image.load('images\img_back.png')
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))
         screen.blit(image_back, (0,0))        
@@ -52,25 +65,14 @@ def menu(screen):
                   pass
         if button_3_rect.collidepoint((pos)):
              if click:
-                  game_rules()
+                  game_rules(screen)
         if button_4_rect.collidepoint((pos)):
              if click:
                   pygame.quit()
                   exit()
         
-        click = False
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                     click = True
-
+        
             
         pygame.display.update()
 

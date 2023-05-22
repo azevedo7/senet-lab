@@ -35,7 +35,7 @@ def main():
     game = Game(screen)
 
     run = start(screen)
-    # run = menu(screen)
+    run = menu(screen)
 
     while run:
         game.sticks.throw()
