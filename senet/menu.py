@@ -11,7 +11,6 @@ def menu(screen):
     pygame.init()
 
     pygame.display.set_caption("Menu")
-    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
 
     pygame.mixer.music.set_volume(0.35)
@@ -22,7 +21,7 @@ def menu(screen):
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))
         screen.blit(image_back, (0, 0))
         # TEXT
-        texto = font.render(f'MENU', True, BLACK)
+        texto = button_font.render(f'MENU', True, BLACK)
         text_rect = texto.get_rect(center=(WIDTH / 2, HEIGHT * 0.1))
         screen.blit(texto, text_rect)
 
@@ -123,16 +122,23 @@ def game_rules(screen):
         "If a throw allows the player to bear a piece off, he must do so.",
         "A player may bear off his pieces only once they are all on the last row of the board."
     ]
+    button_font = pygame.font.Font("Senet_font-Regular.ttf", 24)
+    button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.2)
 
+    return_button = Button(button_image, pos=(WIDTH * 0.90, HEIGHT * 0.90), text_input='BACK',
+                           font=button_font, base_color="black", hovering_color="white")
+    
     while True:
         screen.fill((255, 255, 255))
         y_pos = y
+        pos = pygame.mouse.get_pos()
+        return_button.changeColor(pos)
 
         for text in texts:
             rendered_text = font.render(text, True, (0, 0, 0))
             screen.blit(rendered_text, (x, y_pos))
             y_pos += margin
-
+        return_button.update(screen)
         pygame.display.update()
 
         for event in pygame.event.get():
@@ -141,3 +147,6 @@ def game_rules(screen):
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if return_button.checkForInput(pos):
+                    menu(screen)
