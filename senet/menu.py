@@ -5,15 +5,26 @@ from senet.button import Button
 from senet.game import Game
 import random as rd
 
-# Loop principal
-def menu(screen):
-    game = Game(screen)
+font = None
+button_font = None
+button_image = None
 
+
+def load():
+    global font, button_font, button_image
+
+    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
+    button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
+    button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+
+
+def menu(screen):
+    load()
+    global font, button_font, button_image
+    game = Game(screen)
     pygame.init()
 
     pygame.display.set_caption("Menu")
-    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
-    button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
 
     pygame.mixer.music.set_volume(0.35)
 
@@ -27,8 +38,11 @@ def menu(screen):
         text_rect = texto.get_rect(center=(WIDTH / 2, HEIGHT * 0.1))
         screen.blit(texto, text_rect)
 
-        # BUTTONS
+        font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
+        button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
         button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+
+        # BUTTONS
 
         distance = 0.17
         play_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.27), text_input='PLAY',
@@ -63,16 +77,21 @@ def menu(screen):
 
 
 def play(game, screen):
+    global font, button_font, button_image
+
     clock = pygame.time.Clock()
 
     game.sticks.throw()
     while not game.over:
+        pos = pygame.mouse.get_pos()
+        button1 = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.80), text_input='BACK',
+                        font=button_font, base_color="black", hovering_color="white")
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
                 row, col = select_piece(pos)
                 game.select(row, col)
             if event.type == pygame.KEYDOWN:
@@ -80,7 +99,11 @@ def play(game, screen):
                     game.selected = None
 
         game.update()
+        button1.update(screen)
+        pygame.display.update()
         clock.tick(FPS)
+
+
     game = Game(screen)
     return
 
@@ -144,14 +167,14 @@ def game_rules(screen):
                 return
 
 
-def player_name (screen):
+def init_game(screen):
     jogador = ""
-    text= pygame.font.Font (None, 27)
+    text = pygame.font.Font(None, 27)
     activation = True
-    option_players=["Player","BOT"]
+    option_players = ["Player", "BOT"]
     random_player = rd.choice(option_players)
-    write_text= text.render("The first player is:" + random_player, True, BLACK)
-    
+    write_text = text.render("The first player is:" + random_player, True, BLACK)
+
     while activation:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -159,17 +182,17 @@ def player_name (screen):
                 return
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    activation=False
+                    activation = False
                     player = "Anonymous Player" if not player else player
                 elif event.key == pygame.K_BACKSPACE:
-                    player = player [: -1]
+                    player = player[: -1]
                 else:
                     player += event.unicode
-                    
+
     screen.fill(LIGHT)
-    write_name= text.rendes("Enter your name: " + player, True, BLACK)
-    screen.blit (write_text, (40,40))
-    screen.blit (write_name, (40,80))
+    write_name = text.rendes("Enter your name: " + player, True, BLACK)
+    screen.blit(write_text, (40, 40))
+    screen.blit(write_name, (40, 80))
     pygame.display.update()
-    
-    return  player_name
+
+    return player_name
