@@ -1,5 +1,7 @@
 import pygame
 from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE, WHITE, PADDING
+<<<<<<< HEAD
+<<<<<<< HEAD
 from senet.board import Board
 from senet.sticks import Stick
 from senet.menu3 import menu
@@ -7,6 +9,14 @@ from senet.game import Game
 from senet.start import start
 from senet.rules import game_rules
 from sys import exit
+=======
+from senet.menu3 import menu
+from senet.game import Game
+>>>>>>> parent of 18345ff (Update)
+=======
+from senet.menu3 import menu
+from senet.game import Game
+>>>>>>> parent of 18345ff (Update)
 
 FPS = 30
 pygame.init()
@@ -24,18 +34,31 @@ pygame.display.set_caption('Senet')
 def select_piece(pos):
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
+<<<<<<< HEAD
     row = (mouse_y - PADDING) // SQ_SIZE
     col = (mouse_x - PADDING) // SQ_SIZE
 
     return row, col
 
-
 def main():
+<<<<<<< HEAD
     clock = pygame.time.Clock()
     game = Game(screen)
 
     run = start(screen)
     # run = menu(screen)
+=======
+=======
+def main():
+>>>>>>> parent of 18345ff (Update)
+    game = Game(screen)
+
+    while True:
+        menu(screen, game)
+<<<<<<< HEAD
+>>>>>>> parent of 18345ff (Update)
+=======
+>>>>>>> parent of 18345ff (Update)
 
     while run:
         game.sticks.throw()

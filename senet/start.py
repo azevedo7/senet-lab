@@ -10,7 +10,17 @@ def start(screen):
                 pygame.quit()
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
+<<<<<<< HEAD
+<<<<<<< HEAD
                 
+=======
+                return True
+            if event.type == pygame.KEYDOWN:
+>>>>>>> parent of 18345ff (Update)
+=======
+                return True
+            if event.type == pygame.KEYDOWN:
+>>>>>>> parent of 18345ff (Update)
                 return True
 
         #SONG
