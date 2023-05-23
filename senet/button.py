@@ -1,6 +1,7 @@
 import pygame
 from .constants import WIDTH, HEIGHT
 
+
 class Button:
     def __init__(self, image, pos, text_input, font, base_color, hovering_color):
         self.image = image
@@ -12,7 +13,7 @@ class Button:
         self.text = self.font.render(self.text_input, True, self.base_color)
         if self.image is None:
             self.image = self.text
-        self.rect = self.image.get_rect(center=(self.x_pos , self.y_pos))
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
         self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos - 7))
 
     def update(self, screen):
@@ -33,10 +34,43 @@ class Button:
         else:
             self.text = self.font.render(self.text_input, True, self.base_color)
 
+class ButtonOnly:
+    def __init__(self, image, pos):
+        self.image = image
+        self.x_pos = pos[0]
+        self.y_pos = pos[1]
+        self.rect = self.image.get_rect(center=(self.x_pos, self.y_pos))
 
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
+                                                                                          self.rect.bottom):
+            return True
+        return False
+    
+    def update(self, screen):
+        if self.image is not None:
+            screen.blit(self.image, self.rect)
+
+def sound(pos, screen):
+    button_sound_on = pygame.transform.rotozoom(pygame.image.load('images\menu\sound_on.png'), 0, 0.15)
+    sound_on = ButtonOnly(button_sound_on, (50,50))
+    
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if sound_on.checkForInput(pos):
+                if pygame.mixer.music.get_volume() <= 0.1:
+                    pygame.mixer.music.set_volume(0.35)
+                else:
+                    pygame.mixer.music.set_volume(0)
+                    
+        
+    sound_on.update(screen)      
+    return
+
+            
 def exit_game():
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
     exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.90), text_input='BACK',
-                              font=button_font, base_color="black", hovering_color="white")
+                         font=button_font, base_color="black", hovering_color="white")
     return exit_button
