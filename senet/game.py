@@ -2,14 +2,14 @@ import pygame
 from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING
 from .board import Board
 from .sticks import Stick
-
+from .button import Button
 
 
 class Game:
     def __init__(self, screen):
         self.move = pygame.mixer.Sound('audio\move.wav')
         self.over = False
-        self.winner = None # BLACK or WHITE
+        self.winner = None  # BLACK or WHITE
         self.selected = None
         self.board = Board(screen)
         self.board.create_board()
@@ -19,10 +19,17 @@ class Game:
         self.play_again = False
         self.screen = screen
 
+        # Buttons
+        # button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
+        # button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+        # self.exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.80), text_input='BACK',
+        #                           font=button_font, base_color="black", hovering_color="white")
+
     def update(self):
         self.board.print_board(self.screen)
         self.sticks.draw_sticks(self.screen)
         self.draw_valid_moves()
+        # self.exit_button.update(self.screen)
         self.valid_moves = self.board.calc_valid_moves(self.sticks.calc_mov(), self.turn)
         self.print_turn()
 
@@ -78,7 +85,8 @@ class Game:
             cord = self.valid_moves.get((self.selected.row, self.selected.col))
             if cord:
                 row, col = cord
-                pygame.draw.circle(self.screen, "green", [col * SQ_SIZE + SQ_SIZE // 2 + PADDING, row * SQ_SIZE + SQ_SIZE // 2 + PADDING], 5)
+                pygame.draw.circle(self.screen, "green",
+                                   [col * SQ_SIZE + SQ_SIZE // 2 + PADDING, row * SQ_SIZE + SQ_SIZE // 2 + PADDING], 5)
 
     def print_turn(self):
         font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 32)
@@ -99,3 +107,4 @@ class Game:
         elif self.board.black_left == 0:
             self.over = True
             self.winner = BLACK
+

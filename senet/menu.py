@@ -1,7 +1,7 @@
 import pygame
 import sys
 from senet.constants import *
-from senet.button import Button
+from senet.button import Button, exit_game
 from senet.game import Game
 import random as rd
 
@@ -10,22 +10,14 @@ button_font = None
 button_image = None
 
 
-def load():
-    global font, button_font, button_image
-
+def menu(screen):
     font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
 
-
-def menu(screen):
-    load()
-    global font, button_font, button_image
     game = Game(screen)
     pygame.init()
-
     pygame.display.set_caption("Menu")
-
     pygame.mixer.music.set_volume(0.35)
 
     while True:
@@ -77,21 +69,19 @@ def menu(screen):
 
 
 def play(game, screen):
-    global font, button_font, button_image
-
+    pos = pygame.mouse.get_pos()
     clock = pygame.time.Clock()
 
     game.sticks.throw()
     while not game.over:
-        pos = pygame.mouse.get_pos()
-        button1 = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.80), text_input='BACK',
-                        font=button_font, base_color="black", hovering_color="white")
-
+        exit_button = exit_game()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.checkForInput(pos):
+                    return
                 row, col = select_piece(pos)
                 game.select(row, col)
             if event.type == pygame.KEYDOWN:
@@ -99,10 +89,10 @@ def play(game, screen):
                     game.selected = None
 
         game.update()
-        button1.update(screen)
+        exit_button.changeColor(pos)
+        exit_button.update(screen)
         pygame.display.update()
         clock.tick(FPS)
-
 
     game = Game(screen)
     return
@@ -152,7 +142,7 @@ def game_rules(screen):
 
     return_button = Button(button_image, pos=(WIDTH * 0.90, HEIGHT * 0.90), text_input='BACK',
                            font=button_font, base_color="black", hovering_color="white")
-    
+
     while True:
         screen.fill((255, 255, 255))
         y_pos = y
@@ -178,6 +168,13 @@ def game_rules(screen):
 
 
 def init_game(screen):
+    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
+    button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
+    button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+
+    board_image = pygame.transform.rotozoom(pygame.image.load('images/menu/board.png'), 0, 0.1)
+    board_rect = board_image.get_rect()
+
     jogador = ""
     text = pygame.font.Font(None, 27)
     activation = True

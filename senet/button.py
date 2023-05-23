@@ -1,3 +1,6 @@
+import pygame
+from .constants import WIDTH, HEIGHT
+
 class Button:
     def __init__(self, image, pos, text_input, font, base_color, hovering_color):
         self.image = image
@@ -29,3 +32,11 @@ class Button:
             self.text = self.font.render(self.text_input, True, self.hovering_color)
         else:
             self.text = self.font.render(self.text_input, True, self.base_color)
+
+
+def exit_game():
+    button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
+    button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+    exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.90), text_input='BACK',
+                              font=button_font, base_color="black", hovering_color="white")
+    return exit_button
