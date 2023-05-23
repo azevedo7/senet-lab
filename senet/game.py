@@ -25,7 +25,6 @@ class Game:
         self.draw_valid_moves()
         self.valid_moves = self.board.calc_valid_moves(self.sticks.calc_mov(), self.turn)
         self.print_turn()
-        pygame.display.update()
 
     def select(self, row, col):
         if self.selected:

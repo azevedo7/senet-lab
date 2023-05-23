@@ -26,12 +26,3 @@ house_humiliation = (2, 6)
 house_three_judges = (2, 7)
 house_two_judges = (2, 8)
 house_heru = (2, 9)
-
-
-#Position
-#pos = pygame.mouse.get_pos()
-
-
-
-
-
