@@ -10,7 +10,8 @@ def start(screen):
                 pygame.quit()
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                
+                return True
+            if event.type == pygame.KEYDOWN:
                 return True
 
         #SONG

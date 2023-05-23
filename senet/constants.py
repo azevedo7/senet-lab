@@ -2,10 +2,11 @@ import pygame
 
 ROWS = 3
 COLS = 10
-WIDTH = 800
-HEIGHT = 500
-PADDING = 60
+WIDTH = 900
+HEIGHT = 600
+PADDING = 75
 SQ_SIZE = (WIDTH - PADDING * 2)//COLS
+FPS = 30
 
 # Colors
 DARK = (120, 82, 55)
