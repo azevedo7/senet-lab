@@ -1,7 +1,7 @@
 import pygame
 import sys
 from senet.constants import *
-from senet.button import Button, exit_game
+from senet.button import *
 from senet.game import Game
 import random as rd
 
@@ -21,6 +21,7 @@ def menu(screen):
     pygame.mixer.music.set_volume(0.35)
 
     while True:
+        print(pygame.mixer.music.get_volume())
         pos = pygame.mouse.get_pos()
         image_back = pygame.image.load('images\img_back.png')
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))
@@ -29,10 +30,6 @@ def menu(screen):
         texto = button_font.render(f'MENU', True, BLACK)
         text_rect = texto.get_rect(center=(WIDTH / 2, HEIGHT * 0.1))
         screen.blit(texto, text_rect)
-
-        font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
-        button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
-        button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
 
         # BUTTONS
 
@@ -69,30 +66,32 @@ def menu(screen):
 
 
 def play(game, screen):
-    pos = pygame.mouse.get_pos()
     clock = pygame.time.Clock()
+
+    EXIT_BUTTON = exit_game()
 
     game.sticks.throw()
     while not game.over:
-        exit_button = exit_game()
+        pos = pygame.mouse.get_pos()
+
+        game.update()
+        EXIT_BUTTON.changeColor(pos)
+        EXIT_BUTTON.update(screen)
+        pygame.display.update()
+        clock.tick(FPS)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if exit_button.checkForInput(pos):
+                if EXIT_BUTTON.checkForInput(pos):
                     return
                 row, col = select_piece(pos)
                 game.select(row, col)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     game.selected = None
-
-        game.update()
-        exit_button.changeColor(pos)
-        exit_button.update(screen)
-        pygame.display.update()
-        clock.tick(FPS)
 
     game = Game(screen)
     return
