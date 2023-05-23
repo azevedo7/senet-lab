@@ -19,6 +19,8 @@ def menu(screen):
     pygame.init()
     pygame.display.set_caption("Menu")
     pygame.mixer.music.set_volume(0.35)
+    
+
 
     while True:
         print(pygame.mixer.music.get_volume())
@@ -43,6 +45,7 @@ def menu(screen):
         exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * (0.27 + distance * 3)), text_input='EXIT',
                              font=button_font, base_color="black", hovering_color="white")
 
+
         for button in [play_button, load_button, rules_button, exit_button]:
             button.changeColor(pos)
             button.update(screen)
@@ -61,6 +64,7 @@ def menu(screen):
                 if exit_button.checkForInput(pos):
                     pygame.quit()
                     sys.exit()
+        sound(pos, screen)
 
         pygame.display.update()
 
