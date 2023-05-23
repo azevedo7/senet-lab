@@ -3,11 +3,11 @@ from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING
 from .board import Board
 from .sticks import Stick
 
-move = pygame.mixer.Sound('audio\move.wav')
 
 
 class Game:
     def __init__(self, screen):
+        self.move = pygame.mixer.Sound('audio\move.wav')
         self.over = False
         self.winner = None # BLACK or WHITE
         self.selected = None
@@ -49,7 +49,7 @@ class Game:
             return False
         if self.valid_moves.get((self.selected.row, self.selected.col)) is not None:
             if self.selected and self.valid_moves[(self.selected.row, self.selected.col)] == (row, col):
-                move.play()
+                self.move.play()
                 self.board.move(self.selected, row, col)
                 self.selected = None
 

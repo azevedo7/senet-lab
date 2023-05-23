@@ -2,19 +2,22 @@ import pygame
 import sys
 from senet.constants import *
 from senet.button import Button
-
-pygame.init()
-
-pygame.display.set_caption("Menu")
-font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
-button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
-
+from senet.game import Game
 
 # Loop principal
-def menu(screen, game):
+def menu(screen):
+    game = Game(screen)
+
+    pygame.init()
+
+    pygame.display.set_caption("Menu")
+    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
+    button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
+
+    pygame.mixer.music.set_volume(0.35)
+
     while True:
         pos = pygame.mouse.get_pos()
-
         image_back = pygame.image.load('images\img_back.png')
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))
         screen.blit(image_back, (0, 0))
@@ -46,7 +49,7 @@ def menu(screen, game):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(pos):
-                    play(game)
+                    play(game, screen)
                 if load_button.checkForInput(pos):
                     pass
                 if rules_button.checkForInput(pos):
@@ -58,7 +61,7 @@ def menu(screen, game):
         pygame.display.update()
 
 
-def play(game):
+def play(game, screen):
     clock = pygame.time.Clock()
 
     game.sticks.throw()
@@ -77,7 +80,7 @@ def play(game):
 
         game.update()
         clock.tick(FPS)
-
+    game = Game(screen)
     return
 
 

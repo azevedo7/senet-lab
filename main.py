@@ -1,7 +1,7 @@
 import pygame
 from senet.constants import WIDTH, HEIGHT, DARK, LIGHT, SQ_SIZE, WHITE, PADDING
-from senet.menu3 import menu
-from senet.game import Game
+from senet.menu import menu
+from senet.start import start
 
 
 pygame.init()
@@ -18,11 +18,12 @@ pygame.display.set_caption('Senet')
 #       Restart game when a game ends
 
 
+
 def main():
-    game = Game(screen)
+    start(screen)
 
     while True:
-        menu(screen, game)
+        menu(screen)
 
 
 main()

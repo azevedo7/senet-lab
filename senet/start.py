@@ -1,23 +1,23 @@
 import pygame
 from .constants import WIDTH, HEIGHT, BLACK, WHITE
-from senet.menu3 import menu
+from senet.menu import menu
 pygame.init()
+
 
 def start(screen):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                return False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                return True
+                return
             if event.type == pygame.KEYDOWN:
-                return True
+                return
 
         #SONG
         pygame.mixer.music.set_volume(0.35)
-        start_song = pygame.mixer.music.load('audio\start.mp3')
-        pygame.mixer.music.play(-1) #play em looop
+        pygame.mixer.music.load('audio\start.mp3')
+        pygame.mixer.music.play(-1)  # play em looop
 
         #FONT
         font = font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)

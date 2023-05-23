@@ -116,13 +116,13 @@ class Board:
                                 move = {(row, col): (row, house_sum)}
 
                         if row == 2 and col == 5:
-                            if houses == 1 and self.get_piece(house_second_life[0], house_second_life[1]) == 0:
+                            if houses == 1:
                                 move = {(row, col): house_humiliation}
-                            elif houses == 2 and self.get_piece(house_three_judges[0], house_three_judges[1]) == 0:
+                            elif houses == 2:
                                 move = {(row, col): house_three_judges}
-                            elif houses == 3 and self.get_piece(house_two_judges[0], house_two_judges[1]) == 0:
+                            elif houses == 3:
                                 move = {(row, col): house_two_judges}
-                            elif houses == 4 and self.get_piece(house_heru[0], house_heru[1]) == 0:
+                            elif houses == 4:
                                 move = {(row, col): house_heru}
                             elif houses == 5:
                                 move = {(row, col): (2, 10)}
