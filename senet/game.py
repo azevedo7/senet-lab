@@ -2,11 +2,11 @@ import pygame
 from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING
 from .board import Board
 from .sticks import Stick
-from .button import Button
-
+from random import choice
+from time import sleep
 
 class Game:
-    def __init__(self, screen):
+    def __init__(self, screen, bot):
         self.move = pygame.mixer.Sound('audio\move.wav')
         self.over = False
         self.winner = None  # BLACK or WHITE
@@ -18,18 +18,12 @@ class Game:
         self.turn = WHITE
         self.play_again = False
         self.screen = screen
-
-        # Buttons
-        # button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
-        # button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
-        # self.exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.80), text_input='BACK',
-        #                           font=button_font, base_color="black", hovering_color="white")
+        self.bot = bot
 
     def update(self):
         self.board.print_board(self.screen)
         self.sticks.draw_sticks(self.screen)
         self.draw_valid_moves()
-        # self.exit_button.update(self.screen)
         self.valid_moves = self.board.calc_valid_moves(self.sticks.calc_mov(), self.turn)
         self.print_turn()
 
@@ -107,4 +101,18 @@ class Game:
         elif self.board.black_left == 0:
             self.over = True
             self.winner = BLACK
+
+    def bot_play(self):
+        if not self.bot:
+            return
+        if self.turn == BLACK:
+            self.update()
+            if self.valid_moves == {}:
+                self.change_turn()
+                return
+            random_pair = choice(list(self.valid_moves.items()))
+            print(random_pair[0])
+            self.select(random_pair[0][0], random_pair[0][1])
+            self._move(random_pair[1][0], random_pair[1][1])
+            sleep(1)
 

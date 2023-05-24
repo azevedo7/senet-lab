@@ -15,19 +15,16 @@ def menu(screen):
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
 
-    game = Game(screen)
     pygame.init()
     pygame.display.set_caption("Menu")
     pygame.mixer.music.set_volume(0.35)
-    
-
 
     while True:
-        print(pygame.mixer.music.get_volume())
         pos = pygame.mouse.get_pos()
         image_back = pygame.image.load('images\img_back.png')
         image_back = pygame.transform.scale(image_back, (WIDTH, HEIGHT))
         screen.blit(image_back, (0, 0))
+
         # TEXT
         texto = button_font.render(f'MENU', True, BLACK)
         text_rect = texto.get_rect(center=(WIDTH / 2, HEIGHT * 0.1))
@@ -37,18 +34,19 @@ def menu(screen):
 
         distance = 0.17
         play_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.27), text_input='PLAY',
-                             font=button_font, base_color="black", hovering_color="white")
+                             font=button_font, base_color="black", hovering_color="white", y=-7)
         load_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * (0.27 + distance * 1)), text_input='LOAD',
-                             font=button_font, base_color="black", hovering_color="white")
+                             font=button_font, base_color="black", hovering_color="white", y=-7)
         rules_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * (0.27 + distance * 2)), text_input='RULES',
-                              font=button_font, base_color="black", hovering_color="white")
+                              font=button_font, base_color="black", hovering_color="white", y=-7)
         exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * (0.27 + distance * 3)), text_input='EXIT',
-                             font=button_font, base_color="black", hovering_color="white")
+                             font=button_font, base_color="black", hovering_color="white", y=-7)
 
 
         for button in [play_button, load_button, rules_button, exit_button]:
             button.changeColor(pos)
             button.update(screen)
+        sound_button = soundButton(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,7 +54,8 @@ def menu(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.checkForInput(pos):
-                    play(game, screen)
+                    # play(game, screen)
+                    init_game(screen)
                 if load_button.checkForInput(pos):
                     pass
                 if rules_button.checkForInput(pos):
@@ -64,7 +63,11 @@ def menu(screen):
                 if exit_button.checkForInput(pos):
                     pygame.quit()
                     sys.exit()
-        sound(pos, screen)
+                if sound_button.checkForInput(pos):
+                    if pygame.mixer.music.get_volume() <= 0.1:
+                        pygame.mixer.music.set_volume(0.35)
+                    else:
+                        pygame.mixer.music.set_volume(0)
 
         pygame.display.update()
 
@@ -96,8 +99,9 @@ def play(game, screen):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     game.selected = None
+        game.update()
+        game.bot_play()
 
-    game = Game(screen)
     return
 
 
@@ -144,7 +148,7 @@ def game_rules(screen):
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.2)
 
     return_button = Button(button_image, pos=(WIDTH * 0.90, HEIGHT * 0.90), text_input='BACK',
-                           font=button_font, base_color="black", hovering_color="white")
+                           font=button_font, base_color="black", hovering_color="white", y = -7)
 
     while True:
         screen.fill((255, 255, 255))
@@ -171,14 +175,32 @@ def game_rules(screen):
 
 
 def init_game(screen):
-    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
-    button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
+    button_image = pygame.transform.rotozoom(pygame.image.load('images/menu/stone_button.png'), 0, 0.15)
+    continue_image = pygame.transform.rotozoom(pygame.image.load('images/menu/metal_button.png'), 0, 0.20)
 
-    board_image = pygame.transform.rotozoom(pygame.image.load('images/menu/board.png'), 0, 0.1)
-    board_rect = board_image.get_rect()
+    board_image = pygame.transform.rotozoom(pygame.image.load('images/menu/board.png'), 0, 0.4)
+    board_rect = board_image.get_rect(center=(WIDTH // 2, HEIGHT // 2))
 
-    jogador = ""
+    bullet_on = pygame.transform.rotozoom(pygame.image.load('images/menu/bullet_point_on.png'), 0, 0.25)
+    bullet_off = pygame.transform.rotozoom(pygame.image.load('images/menu/bullet_point_off.png'), 0, 0.25)
+    bot = 0
+
+    player_bullet = Button(bullet_on, pos=(WIDTH * 0.3, HEIGHT * 0.45), text_input='',
+                           font=button_font, base_color="black", hovering_color="black", y=0)
+    bot_bullet = Button(bullet_off, pos=(WIDTH * 0.7, HEIGHT * 0.45), text_input='',
+                        font=button_font, base_color="black", hovering_color="black", y=0)
+
+    # Images and Buttons
+    player_button = Button(button_image, pos=(WIDTH * 0.3, HEIGHT * 0.3), text_input='PLAYER',
+                           font=button_font, base_color="black", hovering_color="black", y=0)
+    bot_button = Button(button_image, pos=(WIDTH * 0.7, HEIGHT * 0.3), text_input='BOT',
+                        font=button_font, base_color="black", hovering_color="black", y=0)
+
+    continue_button = Button(continue_image, pos=(WIDTH // 2, HEIGHT * 0.80), text_input='CONTINUE',
+                             font=button_font, base_color="black", hovering_color="white", y=-2)
+
+    player_name = ""
     text = pygame.font.Font(None, 27)
     activation = True
     option_players = ["Player", "BOT"]
@@ -186,23 +208,42 @@ def init_game(screen):
     write_text = text.render("The first player is:" + random_player, True, BLACK)
 
     while activation:
+        pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    activation = False
-                    player = "Anonymous Player" if not player else player
-                elif event.key == pygame.K_BACKSPACE:
-                    player = player[: -1]
-                else:
-                    player += event.unicode
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_RETURN:
+            #         activation = False
+            #         player = "Anonymous Player" if not player_name else player_name
+            #     elif event.key == pygame.K_BACKSPACE:
+            #         player_name = player_name[: -1]
+            #     else:
+            #         player_name += event.unicode
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if bot_bullet.checkForInput(pos):
+                    player_bullet.changeImage(bullet_off)
+                    bot_bullet.changeImage(bullet_on)
+                    bot = 1
+                if player_bullet.checkForInput(pos):
+                    player_bullet.changeImage(bullet_on)
+                    bot_bullet.changeImage(bullet_off)
+                    bot = 0
+                if continue_button.checkForInput(pos):
+                    play(Game(screen, bot), screen)
+                    return
 
-    screen.fill(LIGHT)
-    write_name = text.rendes("Enter your name: " + player, True, BLACK)
-    screen.blit(write_text, (40, 40))
-    screen.blit(write_name, (40, 80))
-    pygame.display.update()
+        screen.fill((255, 255, 255))
+        screen.blit(board_image, board_rect)
+
+        for button in [player_button, bot_button, player_bullet, bot_bullet, continue_button]:
+            button.update(screen)
+            button.changeColor(pos)
+
+        write_name = text.render("Enter your name: " + player_name, True, BLACK)
+        # screen.blit(write_text, (40, 40))
+        screen.blit(write_name, (40, 80))
+        pygame.display.update()
 
     return player_name
