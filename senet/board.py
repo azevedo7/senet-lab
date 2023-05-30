@@ -96,6 +96,34 @@ class Board:
                     house_sum = col + houses
                     house_sub = col - houses
 
+                    piece_1 = 0
+                    piece_2 = 0
+                    if row % 2 == 0:
+                        if col + 1 <= 9:
+                            piece_1 = self.get_piece(row, col+1)
+                        elif col + 1 >= 10:
+                            piece_1 = self.get_piece(row + 1, 9)
+                    elif row == 1:
+                        if col - 1 >= 0:
+                            piece_1 = self.get_piece(row, col-1)
+                        elif col - 1 < 0:
+                            piece_1 = self.get_piece(row + 1, col+1)
+
+                    if row % 2 == 0:
+                        if col + 2 <= 9:
+                            piece_2 = self.get_piece(row, col + 2)
+                        elif col + 2 >= 10:
+                            piece_2 = self.get_piece(row + 1, 8)
+                    elif row == 1:
+                        if col - 2 >= 0:
+                            piece_2 = self.get_piece(row, col-2)
+                        elif col - 2 < 0:
+                            piece_2 = self.get_piece(row + 1, abs(col-2))
+
+                    if piece_1 and piece_2:
+                        if piece_1.color != piece.color and piece_2.color != piece.color and houses > 2:
+                            continue
+
                     if piece.color == color:
                         move = None
                         if row == 0 and house_sum < 10:
