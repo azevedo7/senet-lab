@@ -224,6 +224,7 @@ def init_game(screen):
                     activation = False
                     player_name = "Anonymous Player" if (not player_name or player_name == "Click here to type")\
                         else player_name
+                    play(Game(screen, bot), screen)
                 elif event.key == pygame.K_BACKSPACE:
                     player_name = player_name[: -1]
                 else:
