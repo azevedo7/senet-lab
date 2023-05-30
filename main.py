@@ -21,6 +21,7 @@ pygame.display.set_caption('Senet')
 
 def main():
     start(screen)
+    pygame.mixer.music.set_volume(0.35)
 
     while True:
         menu(screen)

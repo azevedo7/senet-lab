@@ -11,13 +11,11 @@ button_image = None
 
 
 def menu(screen):
-    font = pygame.font.Font("Newathenaunicode-EP3l.ttf", 20)
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
 
     pygame.init()
     pygame.display.set_caption("Menu")
-    pygame.mixer.music.set_volume(0.35)
 
     while True:
         pos = pygame.mouse.get_pos()
@@ -41,7 +39,6 @@ def menu(screen):
                               font=button_font, base_color="black", hovering_color="white", y=-7)
         exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * (0.27 + distance * 3)), text_input='EXIT',
                              font=button_font, base_color="black", hovering_color="white", y=-7)
-
 
         for button in [play_button, load_button, rules_button, exit_button]:
             button.changeColor(pos)
@@ -74,10 +71,11 @@ def menu(screen):
 
 def play(game, screen):
     clock = pygame.time.Clock()
-
     EXIT_BUTTON = exit_game()
-
     game.sticks.throw()
+
+    bot_timer = pygame.USEREVENT + 1
+    pygame.time.set_timer(bot_timer, 900)
     while not game.over:
         pos = pygame.mouse.get_pos()
 
@@ -95,12 +93,14 @@ def play(game, screen):
                 if EXIT_BUTTON.checkForInput(pos):
                     return
                 row, col = select_piece(pos)
-                game.select(row, col)
+                if not (game.bot and game.turn == BLACK):
+                    game.select(row, col)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     game.selected = None
+            if event.type == bot_timer:
+                game.bot_play()
         game.update()
-        game.bot_play()
 
     return
 
@@ -148,7 +148,7 @@ def game_rules(screen):
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.2)
 
     return_button = Button(button_image, pos=(WIDTH * 0.90, HEIGHT * 0.90), text_input='BACK',
-                           font=button_font, base_color="black", hovering_color="white", y = -7)
+                           font=button_font, base_color="black", hovering_color="white", y=-7)
 
     while True:
         screen.fill((255, 255, 255))
@@ -177,6 +177,7 @@ def game_rules(screen):
 def init_game(screen):
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images/menu/stone_button.png'), 0, 0.15)
+    player_name_image = pygame.transform.rotozoom(pygame.image.load('images/menu/stone_button2.png'), 0, 0.3)
     continue_image = pygame.transform.rotozoom(pygame.image.load('images/menu/metal_button.png'), 0, 0.20)
 
     board_image = pygame.transform.rotozoom(pygame.image.load('images/menu/board.png'), 0, 0.4)
@@ -200,7 +201,9 @@ def init_game(screen):
     continue_button = Button(continue_image, pos=(WIDTH // 2, HEIGHT * 0.80), text_input='CONTINUE',
                              font=button_font, base_color="black", hovering_color="white", y=-2)
 
-    player_name = ""
+    player_name = "Click to type"
+    name_color = BLACK
+    write_name = 0
     text = pygame.font.Font(None, 27)
     activation = True
     option_players = ["Player", "BOT"]
@@ -209,18 +212,22 @@ def init_game(screen):
 
     while activation:
         pos = pygame.mouse.get_pos()
+        player_name_button = Button(player_name_image, pos=(WIDTH // 2, HEIGHT * 0.6), text_input=f"{player_name}"
+                                    , font=button_font, base_color=name_color, hovering_color='black', y=0)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_RETURN:
-            #         activation = False
-            #         player = "Anonymous Player" if not player_name else player_name
-            #     elif event.key == pygame.K_BACKSPACE:
-            #         player_name = player_name[: -1]
-            #     else:
-            #         player_name += event.unicode
+            if event.type == pygame.KEYDOWN and write_name:
+                if event.key == pygame.K_RETURN:
+                    activation = False
+                    player_name = "Anonymous Player" if (not player_name or player_name == "Click here to type")\
+                        else player_name
+                elif event.key == pygame.K_BACKSPACE:
+                    player_name = player_name[: -1]
+                else:
+                    player_name += event.unicode
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if bot_bullet.checkForInput(pos):
                     player_bullet.changeImage(bullet_off)
@@ -230,20 +237,29 @@ def init_game(screen):
                     player_bullet.changeImage(bullet_on)
                     bot_bullet.changeImage(bullet_off)
                     bot = 0
+                if player_name_button.checkForInput(pos):
+                    if player_name == "Click to type":
+                        player_name = ''
+                    write_name = 1
+                    name_color = WHITE
+                if not player_name_button.checkForInput(pos):
+                    write_name = 0
+                    name_color = BLACK
                 if continue_button.checkForInput(pos):
                     play(Game(screen, bot), screen)
                     return
 
+
         screen.fill((255, 255, 255))
         screen.blit(board_image, board_rect)
 
-        for button in [player_button, bot_button, player_bullet, bot_bullet, continue_button]:
+        for button in [player_button, bot_button, player_bullet, bot_bullet, continue_button, player_name_button]:
             button.update(screen)
             button.changeColor(pos)
 
-        write_name = text.render("Enter your name: " + player_name, True, BLACK)
+        # write_name = text.render("Enter your name: " + player_name, True, BLACK)
         # screen.blit(write_text, (40, 40))
-        screen.blit(write_name, (40, 80))
+        # screen.blit(write_name, (40, 80))
         pygame.display.update()
 
     return player_name

@@ -1,5 +1,5 @@
 import pygame
-from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING
+from .constants import WHITE, BLACK, BLUE, SQ_SIZE, HEIGHT, WIDTH, PADDING, ANIMATION_DELAY
 from .board import Board
 from .sticks import Stick
 from random import choice
@@ -103,9 +103,12 @@ class Game:
             self.winner = BLACK
 
     def bot_play(self):
+        obstacle_timer = pygame.USEREVENT + 1
+        pygame.time.set_timer(obstacle_timer, 900)
         if not self.bot:
             return
         if self.turn == BLACK:
+            sleep(1)
             self.update()
             if self.valid_moves == {}:
                 self.change_turn()
@@ -114,5 +117,5 @@ class Game:
             print(random_pair[0])
             self.select(random_pair[0][0], random_pair[0][1])
             self._move(random_pair[1][0], random_pair[1][1])
-            sleep(1)
+
 
