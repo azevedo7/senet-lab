@@ -160,7 +160,7 @@ def game_rules(screen):
                            font=button_font, base_color="black", hovering_color="white", y=-7)
 
     while True:
-        screen.fill((255, 255, 255))
+        screen.fill((LIGHT))
         y_pos = y
         pos = pygame.mouse.get_pos()
         return_button.changeColor(pos)
@@ -315,7 +315,7 @@ def win_screen(screen, game):
 
 
 def saveGame(screen, game):
-    SAVE_GAME = input("introduza o nome do ficheiro em que pretenda guardar o jogo: ")
+    SAVE_GAME = input("Introduza o nome do ficheiro em que pretenda guardar o jogo: ")
 
     try:
         with open('docs/readme.txt', 'x+') as f:
