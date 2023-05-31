@@ -4,6 +4,8 @@ from senet.constants import *
 from senet.button import *
 from senet.game import Game
 import random as rd
+from ast import literal_eval
+from senet.pieces import Piece
 
 font = None
 button_font = None
@@ -54,7 +56,7 @@ def menu(screen):
                     # play(game, screen)
                     init_game(screen)
                 if load_button.checkForInput(pos):
-                    pass
+                    loadGame(screen)
                 if rules_button.checkForInput(pos):
                     game_rules(screen)
                 if exit_button.checkForInput(pos):
@@ -72,7 +74,9 @@ def menu(screen):
 def play(game, screen):
     clock = pygame.time.Clock()
     EXIT_BUTTON = exit_game()
-    game.sticks.throw()
+    if not game.game_is_loaded:
+        game.sticks.throw()
+    game.game_is_loaded = 0
 
     bot_timer = pygame.USEREVENT + 1
     pygame.time.set_timer(bot_timer, 900)
@@ -87,10 +91,12 @@ def play(game, screen):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                saveGame(screen, game)
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if EXIT_BUTTON.checkForInput(pos):
+                    saveGame(screen, game)
                     return
                 row, col = select_piece(pos)
                 if not (game.bot and game.turn == BLACK):
@@ -101,7 +107,6 @@ def play(game, screen):
             if event.type == bot_timer:
                 game.bot_play()
         game.update()
-
     return
 
 
@@ -224,7 +229,9 @@ def init_game(screen):
                     activation = False
                     player_name = "Anonymous Player" if (not player_name or player_name == "Click here to type")\
                         else player_name
-                    play(Game(screen, bot), screen)
+                    game = Game(screen, bot)
+                    game.player_name = player_name
+                    play(game, screen)
                 elif event.key == pygame.K_BACKSPACE:
                     player_name = player_name[: -1]
                 else:
@@ -264,3 +271,59 @@ def init_game(screen):
         pygame.display.update()
 
     return player_name
+
+def saveGame(screen, game):
+    SAVE_GAME = input("introduza o nome do ficheiro em que pretenda guardar o jogo")
+
+    try:
+        with open('docs/readme.txt', 'x+') as f:
+            file = open("%s.py" % SAVE_GAME, 'w')
+    except FileNotFoundError:
+        file = open("%s.txt" % SAVE_GAME, 'w')
+    save_list = []
+
+    save_list.append(game.player_name)
+    save_list.append(game.bot)
+    save_list.append(game.sticks.calc_mov())
+    save_list.append(game.board.return_board())
+
+    file.write(str(save_list))
+    # file.write("Player =" + str(game.player_name))
+    # file.write("Sticks =" + str(game.sticks))
+    # file.write("Pieces position=" + str(game.player_name))
+    # file.write(" =" + str(game.board))
+
+
+def loadGame(screen):
+    file_name = input("Indique o nome do ficheiro que pretende ler:") + ".txt"
+
+    with open(file_name, 'r') as file:
+        content = file.read()
+
+    converted_list = literal_eval(content)
+    game = Game(screen, converted_list[1])
+
+    game_board = []
+    save_board = converted_list[3]
+    game.board.board = []
+
+
+    for row in range(ROWS):
+        game_board.append([])
+        game.board.board.append([])
+        for col in range(COLS):
+
+            piece_details = save_board[row][col]
+            if piece_details != 0:
+                game.board.board[row].append(Piece(piece_details[0], piece_details[1], piece_details[2]))
+                pass
+            else:
+                game.board.board[row].append(0)
+
+    while True:
+        game.sticks.throw()
+        if game.sticks.calc_mov() == converted_list[2]:
+            break
+
+    game.game_is_loaded = 1
+    play(game, screen)

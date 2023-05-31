@@ -81,10 +81,10 @@ class Board:
                     piece.draw(screen)
 
         for i in range(5 - self.black_left):
-            pygame.draw.circle(screen, BLACK, (WIDTH - PADDING - i * SQ_SIZE, HEIGHT * 0.50), SQ_SIZE / 3)
+            pygame.draw.circle(screen, BLACK, (WIDTH - PADDING - i * SQ_SIZE, HEIGHT * 0.58), SQ_SIZE / 3)
 
         for i in range(5 - self.white_left):
-            pygame.draw.circle(screen, WHITE, (PADDING + i * SQ_SIZE, HEIGHT * 0.50), SQ_SIZE / 3)
+            pygame.draw.circle(screen, WHITE, (PADDING + i * SQ_SIZE, HEIGHT * 0.58), SQ_SIZE / 3)
 
     def calc_valid_moves(self, houses, color):
         self.valid_moves = {}
@@ -178,3 +178,19 @@ class Board:
         else:
             self.white_left -= 1
         self.board[row][col] = 0
+
+    def return_board(self):
+        clean_board = []
+
+        for row in range(ROWS):
+            clean_board.append([])
+            for col in range(COLS):
+                clean_board[row].append([])
+                piece = self.get_piece(row,col)
+                if piece:
+                    clean_board[row][col] = [piece.row, piece.col, piece.color]
+                else:
+                    clean_board[row][col] = 0
+
+        clean_board[2].append(0)
+        return clean_board
