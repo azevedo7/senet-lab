@@ -315,7 +315,7 @@ def win_screen(screen, game):
 
 
 def saveGame(screen, game):
-    SAVE_GAME = input("introduza o nome do ficheiro em que pretenda guardar o jogo: ")
+    SAVE_GAME = input("introduza o nome do ficheiro em que pretenda guardar o jogo")
 
     try:
         with open('docs/readme.txt', 'x+') as f:
@@ -338,19 +338,10 @@ def saveGame(screen, game):
 
 
 def loadGame(screen):
-    file_name = input("Indique o nome do ficheiro que pretende ler: ") + ".txt"
+    file_name = input("Indique o nome do ficheiro que pretende ler:") + ".txt"
 
     with open(file_name, 'r') as file:
         content = file.read()
-
-    try:
-        with open(file_name, 'r') as file:
-            content = file.read()
-
-    except FileNotFoundError:
-        return
-
-    save_list = []
 
     converted_list = literal_eval(content)
     game = Game(screen, converted_list[1])
