@@ -69,5 +69,5 @@ def exit_game():
     button_font = pygame.font.Font("Senet_font-Regular.ttf", 34)
     button_image = pygame.transform.rotozoom(pygame.image.load('images\menu\img_none.png'), 0, 0.3)
     exit_button = Button(button_image, pos=(WIDTH / 2, HEIGHT * 0.90), text_input='BACK',
-                         font=button_font, base_color="black", hovering_color="white", y=7)
+                         font=button_font, base_color="black", hovering_color="white", y=-7)
     return exit_button

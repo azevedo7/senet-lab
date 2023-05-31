@@ -1,4 +1,3 @@
-import pygame
 import sys
 from senet.constants import *
 from senet.button import *
@@ -6,6 +5,7 @@ from senet.game import Game
 import random as rd
 from ast import literal_eval
 from senet.pieces import Piece
+from random import randint
 
 font = None
 button_font = None
@@ -78,6 +78,9 @@ def play(game, screen):
         game.sticks.throw()
     game.game_is_loaded = 0
 
+    turns = [BLACK, WHITE]
+    game.turn = turns[randint(0, 1)]
+
     bot_timer = pygame.USEREVENT + 1
     pygame.time.set_timer(bot_timer, 900)
     while not game.over:
@@ -98,7 +101,7 @@ def play(game, screen):
                 if EXIT_BUTTON.checkForInput(pos):
                     saveGame(screen, game)
                     return
-                row, col = select_piece(pos)
+                row, col = select_piece()
                 if not (game.bot and game.turn == BLACK):
                     game.select(row, col)
             if event.type == pygame.KEYDOWN:
@@ -107,10 +110,11 @@ def play(game, screen):
             if event.type == bot_timer:
                 game.bot_play()
         game.update()
+    win_screen(screen, game)
     return
 
 
-def select_piece(pos):
+def select_piece():
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
     row = (mouse_y - PADDING) // SQ_SIZE
@@ -272,6 +276,44 @@ def init_game(screen):
 
     return player_name
 
+def win_screen(screen, game):
+    clock = pygame.time.Clock()
+    font = pygame.font.Font("Senet_font-Regular.ttf", 60)
+    exit_button = exit_game()
+
+    # Render the text
+    if game.winner == BLACK:
+        text = font.render("Black Wins", True, (255, 255, 255))  # White color
+    else:
+        text = font.render("White Wins", True, (255, 255, 255))  # White color
+
+    # Center the text on the screen
+    text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+    # Draw a translucent rectangle behind the text
+    rect_width, rect_height = text_rect.width + 40, text_rect.height + 40
+    rect = pygame.Rect((WIDTH - rect_width) // 2, (HEIGHT - rect_height) // 2, rect_width, rect_height)
+    pygame.draw.rect(screen, (0, 0, 0, 128), rect)
+
+    # Draw the text on the screen
+    screen.blit(text, text_rect)
+
+    # Wait for the user to close the window
+    while True:
+        pos = pygame.mouse.get_pos()
+        exit_button.update(screen)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.checkForInput(pos):
+                    return
+        clock.tick(FPS)
+
+
 def saveGame(screen, game):
     SAVE_GAME = input("introduza o nome do ficheiro em que pretenda guardar o jogo")
 
@@ -286,6 +328,7 @@ def saveGame(screen, game):
     save_list.append(game.bot)
     save_list.append(game.sticks.calc_mov())
     save_list.append(game.board.return_board())
+    save_list.append(game.turn)
 
     file.write(str(save_list))
     # file.write("Player =" + str(game.player_name))
@@ -325,5 +368,6 @@ def loadGame(screen):
         if game.sticks.calc_mov() == converted_list[2]:
             break
 
+    game.turn = converted_list[4]
     game.game_is_loaded = 1
     play(game, screen)

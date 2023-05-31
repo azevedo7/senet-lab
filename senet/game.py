@@ -4,7 +4,6 @@ from .board import Board
 from .sticks import Stick
 from random import choice
 from time import sleep
-from random import randint,seed
 
 class Game:
     def __init__(self, screen, bot):
@@ -16,9 +15,7 @@ class Game:
         self.board.create_board()
         self.sticks = Stick()
         self.valid_moves = {}
-        turn_colors = [WHITE, BLACK]
-        number = randint(0, 2)
-        self.turn = turn_colors[number]
+        self.turn = None
         self.play_again = False
         self.screen = screen
         self.bot = bot
@@ -26,6 +23,7 @@ class Game:
         self.game_is_loaded = 0
 
     def update(self):
+        self.check_win()
         self.board.print_board(self.screen)
         self.sticks.draw_sticks(self.screen)
         self.draw_valid_moves()
